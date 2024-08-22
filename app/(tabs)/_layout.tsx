@@ -32,6 +32,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="QR"
+        options={{
+          title: 'QR',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name='qr-code' color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
