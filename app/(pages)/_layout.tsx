@@ -45,7 +45,6 @@ export default function Layout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="account/login" />
       <Stack.Screen name="account/cnw" />
-      <Stack.Screen name="home/homepage" />
     </Stack>
   );
 }
