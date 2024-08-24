@@ -35,7 +35,7 @@ const LoginPage = () => {
       </View>
 
       <View>
-        <Link href="../home/homepage" asChild>
+        <Link href="../../(tabs)/homeIndex" asChild>
           <Pressable
             onPressIn={() => {
               setColorManage(true);
