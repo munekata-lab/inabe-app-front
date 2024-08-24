@@ -50,7 +50,7 @@ const LoginPage = () => {
       </View>
 
       <View>
-        <Link href="./cnw" asChild>
+        <Link href="../ApplicationForm/af" asChild>
           <Pressable
             onPressIn={() => {
               setColorManageNewAccount(true);

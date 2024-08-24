@@ -15,7 +15,7 @@ const ApplicationForm = () => {
   // ログイン文字をクリックしたときの処理
   const handleLoginPress = () => {
     if (checked) {
-      router.push('../../homeIndex');
+      router.push('../account/cnw');
     } else {
       Alert.alert('同意しないと\nログインできません．');
     }
