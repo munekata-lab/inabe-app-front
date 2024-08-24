@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
 // 导入本地图片
 import homeIcon from '../../src/res/INABE_IMG/home.png';
 import mapIcon from '../../src/res/INABE_IMG/map.png';
