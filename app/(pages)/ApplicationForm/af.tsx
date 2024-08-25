@@ -75,7 +75,8 @@ const ApplicationForm = () => {
                 同意しますか？
               </Text>
             }
-            containerStyle={{ backgroundColor: '#F8F8F8' }}
+            wrapperStyle={{ margin: 1 }}
+            containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, width: 150, alignSelf: 'center' }}
             checked={checked}
             onPress={() => setCheck(!checked)}
           />
