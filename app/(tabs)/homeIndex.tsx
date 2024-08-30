@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from 'react-native';
 import { pxToDp } from '../../src/utils/stylesKits';
+import { Link } from "expo-router";
+
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -16,9 +18,9 @@ const images = [
 
 class homeIndex extends Component {
     scrollX = new Animated.Value(0); // 初始化滚动位置
-    nofity = () => {
-        alert('通知');
-    }
+    // nofity = () => {
+    //     router.push("../../notification");
+    // }
     setting = () => {
         alert('設定');
     }
@@ -29,12 +31,12 @@ class homeIndex extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.topContainer}>
-                    <TouchableOpacity onPress={this.nofity}>
+                    <Link href="../../notification">
                     <Image
                         source={require('../../src/res/INABE_IMG/notif.png')}
                         style={styles.smallImage}
                     />
-                    </TouchableOpacity>
+                    </Link>
                     <Image
                         source={require('../../src/res/INABE_IMG/enreIcon.jpg')}
                         style={styles.largeImage}
