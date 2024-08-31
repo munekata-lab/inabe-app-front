@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from 'react-native';
 import { pxToDp } from '../../src/utils/stylesKits';
+import TabTwoScreen from './QR';  // 导入 TabTwoScreen 组件
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -11,39 +12,50 @@ const images = [
     require('../../src/res/INABE_IMG/event_01.png'),
     require('../../src/res/INABE_IMG/event_01.png'),
     require('../../src/res/INABE_IMG/event_01.png'),
-    // 可以添加更多图片...
 ];
 
 class homeIndex extends Component {
     scrollX = new Animated.Value(0); // 初始化滚动位置
+
+    state = {
+        isScanning: false,  // 添加状态来控制显示哪个组件
+    };
+
     nofity = () => {
         alert('通知');
     }
+
     setting = () => {
         alert('設定');
     }
+
     scanQRCode = () => {
-        alert('スキャン中...');
+        this.setState({ isScanning: true });  // 更新状态以显示 TabTwoScreen
     }
+
     render() {
+        if (this.state.isScanning) {
+            return <TabTwoScreen />;  // 如果状态为扫描，则显示 TabTwoScreen 组件
+        }
+
         return (
             <View style={styles.container}>
                 <View style={styles.topContainer}>
                     <TouchableOpacity onPress={this.nofity}>
-                    <Image
-                        source={require('../../src/res/INABE_IMG/notif.png')}
-                        style={styles.smallImage}
-                    />
+                        <Image
+                            source={require('../../src/res/INABE_IMG/notif.png')}
+                            style={styles.smallImage}
+                        />
                     </TouchableOpacity>
                     <Image
                         source={require('../../src/res/INABE_IMG/enreIcon.jpg')}
                         style={styles.largeImage}
                     />
                     <TouchableOpacity onPress={this.setting}>
-                    <Image
-                        source={require('../../src/res/INABE_IMG/setting.jpg')}
-                        style={styles.smallImage}
-                    />
+                        <Image
+                            source={require('../../src/res/INABE_IMG/setting.jpg')}
+                            style={styles.smallImage}
+                        />
                     </TouchableOpacity>
                 </View>
 
@@ -80,8 +92,8 @@ class homeIndex extends Component {
                             );
                         })}
                     </Animated.ScrollView>
-
                 </View>
+
                 <TouchableOpacity style={styles.bottomContainer} onPress={this.scanQRCode}>
                     <Image
                         source={require('../../src/res/INABE_IMG/QRCode.png')}
