@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Modal, Button } from 'react-native';
 import { pxToDp } from '../../src/utils/stylesKits';
 
 import TabTwoScreen from './QR';  // 导入 TabTwoScreen 组件
-
-
-
+import { router } from 'expo-router';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -18,21 +16,25 @@ const images = [
     require('../../src/res/INABE_IMG/event_01.png'),
 ];
 
+
 class homeIndex extends Component {
     scrollX = new Animated.Value(0); // 初始化滚动位置
 
-
     state = {
         isScanning: false,  // 添加状态来控制显示哪个组件
+        settingVisible: false,
     };
 
     nofity = () => {
         alert('通知');
     }
 
+    openSetting = () => {
+        this.setState({ settingVisible: true })
+    }
 
-    setting = () => {
-        alert('設定');
+    closeSetting = () => {
+        this.setState({ settingVisible: false })
     }
 
     scanQRCode = () => {
@@ -59,12 +61,44 @@ class homeIndex extends Component {
                         source={require('../../src/res/INABE_IMG/enreIcon.jpg')}
                         style={styles.largeImage}
                     />
-                    <TouchableOpacity onPress={this.setting}>
+                    <TouchableOpacity onPress={this.openSetting}>
                         <Image
                             source={require('../../src/res/INABE_IMG/setting.jpg')}
                             style={styles.smallImage}
                         />
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.settingLayOut}>
+                    <Modal
+                        visible={this.state.settingVisible}
+                        transparent={true}
+                        animationType="slide"
+                        onRequestClose={this.closeSetting}
+                    >
+                        <View style={styles.settingLayOut}>
+                            <View style={styles.settingView}>
+                                <Button
+                                    title='パスワード変更'
+                                    onPress={() => {
+                                        router.push("../(pages)/ChangePassWord/email");
+                                        this.closeSetting();
+                                    }}
+                                />
+
+                                <Button
+                                    title='ログアウト'
+                                    onPress={() => {
+                                        // indexに遷移
+                                        router.push("../(pages)/");
+                                        this.closeSetting();
+                                    }}
+                                />
+
+                                <Button title="×" onPress={this.closeSetting} />
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
 
                 <View style={styles.scrollViewWrapper}>
@@ -187,5 +221,29 @@ const styles = StyleSheet.create({
         fontSize: pxToDp(20),
         color: "black",
         fontWeight: "bold",
+    },
+
+    settingLayOut: {
+        position: 'absolute',
+        margin: 18,
+        top: 160,  // ここで画像の位置からのオフセットを調整
+        width: '100%',
+        alignItems: 'flex-end',
+    },
+
+    settingView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 });
