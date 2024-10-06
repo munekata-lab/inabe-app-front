@@ -6,6 +6,8 @@ import { CodeField, Cursor } from 'react-native-confirmation-code-field';
 
 import { router } from 'expo-router';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 class confirmCode extends Component {
     state = {
@@ -41,16 +43,19 @@ class confirmCode extends Component {
 
     //認証コードinput完了イベント
     onVcodeSubmitEditing = async () => {
-        const { vcodeTxt, emailNumber } = this.state;
+        const { vcodeTxt} = this.state;
         if (vcodeTxt.length != 6) {
             console.log('認証コードが間違っています');
             return;
         }
+
         try {
+            const emailNumber = await AsyncStorage.getItem('email');
             const res = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/confirmEmail', {
                 email: emailNumber,
                 confirmation_code: vcodeTxt,
             })
+console.log(res.data);
 
             if (res.data["statuscode"] == 200) {
                 router.push("./login");

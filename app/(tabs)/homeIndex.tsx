@@ -51,7 +51,7 @@ class homeIndex extends Component {
             const res = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/logOut', {
                 session: session,
             })
-
+            console.log(res.data["statuscode"]);
             if (res.data["statuscode"] == 200) {
                 router.push("../(pages)/account/login");
             }
