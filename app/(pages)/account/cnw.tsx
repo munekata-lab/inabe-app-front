@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Pressable, StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { Link, useRouter } from 'expo-router';
+import axios from 'axios';
 
 // create new accout page
 const CreateNewAccount = () => {
@@ -9,6 +10,32 @@ const CreateNewAccount = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
+
+  const handlePostRequest = async () => {
+    // emailが入力されていない場合の処理とパスワードが空の時の処理を書く，最終的にはemailのバリデーションチェックも行いたい
+
+    if (password != confirmPassword) {
+      Alert.alert('パスワードが一致しません')
+    } else {
+      try {
+        const result = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/registerByEmail', {
+          email: email,
+          password: password,
+        });
+        console.log('レスポンスデータ', result.data);
+
+        if (result.data["statuscode"] == 200) {
+          router.push("../../(tabs)/homeIndex");
+        } else {
+          // とりあえずこのエラー文にしているが，emailを入力していない場合もこのAlert文が実行される
+          Alert.alert('パスワードを6文字以上入力してください')
+        }
+
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
 
   return (
     <View>
@@ -25,14 +52,25 @@ const CreateNewAccount = () => {
         placeholder='password'
         value={password}
         onChangeText={setPassword}
+        secureTextEntry={true}
       />
       <TextInput
         style={styles.input}
         placeholder='password（確認）'
         value={confirmPassword}
         onChangeText={setConfirmPassword}
+        secureTextEntry={true}
       />
 
+      <View style={{ top: '170%' }}>
+        <Button
+          onPress={handlePostRequest}
+          title="登録"
+          color="red"
+        />
+      </View>
+
+      {/* 
       <View style={{ top: '170%' }}>
         <Button
           onPress={() => {
@@ -41,7 +79,7 @@ const CreateNewAccount = () => {
           title="登録"
           color="red"
         />
-      </View>
+      </View> */}
 
       {/* 
       <View>
