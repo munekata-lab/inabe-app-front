@@ -11,39 +11,43 @@ const CreateNewAccount = () => {
   const router = useRouter();
 
   return (
-    <View>
-      <Text style={{ top: '50%', left: '21%', fontSize: 24, }}>新しいアカウントの作成</Text>
+    <View style={styles.container}>
+      <View >
+        <Text style={{ top: '50%', left: '21%', fontSize: 24, }}>新しいアカウントの作成</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder='Email'
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='password'
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='password（確認）'
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-      />
-
-      <View style={{ top: '170%' }}>
-        <Button
-          onPress={() => {
-            router.push("../../(tabs)/homeIndex")
-          }}
-          title="登録"
-          color="red"
+        <TextInput
+          style={styles.input}
+          placeholder='Email'
+          value={email}
+          onChangeText={setEmail}
+          placeholderTextColor='gray'
         />
-      </View>
+        <TextInput
+          style={styles.input}
+          placeholder='password'
+          value={password}
+          onChangeText={setPassword}
+          placeholderTextColor='gray'
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='password（確認）'
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          placeholderTextColor='gray'
+        />
 
-      {/* 
+        <View style={{ top: '170%' }}>
+          <Button
+            onPress={() => {
+              router.push("./confirmCode")
+            }}
+            title="登録"
+            color="red"
+          />
+        </View>
+
+        {/* 
       <View>
         <Link href="../../(tabs)/homeIndex" asChild>
           <Pressable>
@@ -51,12 +55,17 @@ const CreateNewAccount = () => {
           </Pressable>
         </Link>
       </View> */}
-
+      </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   input: {
     top: '100%',
     padding: 10,
@@ -65,6 +74,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     backgroundColor: '#fff',
+    color:'black'
   },
   button: {
     marginTop: 20,

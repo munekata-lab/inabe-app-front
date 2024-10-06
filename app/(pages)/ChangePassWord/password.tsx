@@ -1,53 +1,116 @@
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native'
-import { useRouter } from 'expo-router';
+import React, { Component } from 'react';
+import { Text, View, TextInput, Button, StyleSheet, Alert } from 'react-native'
+import axios from 'axios';
+import { pxToDp } from '@/src/utils/stylesKits';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const password = () => {
-  const router = useRouter();
+import { router } from 'expo-router';
 
-  return (
-    <View>
-      <View>
-        <Text style={{ top: '190%', left: '32%', fontSize: 24, }}>
-          パスワード変更
-        </Text>
-      </View>
+class password extends Component {
+  state = {
+    email: '',
+    session: '',
+    prePassword: '',
+    newPassword: ''
+  }
 
-      <View>
-        {/* 
+  checkEmail = () => {
+    const { email } = this.state;
+    if (email) {
+      this.changePassword();
+    }
+    else Alert.alert('Emailを入力してください');
+
+  }
+
+  changePassword = async () => {
+    const { email,  prePassword, newPassword } = this.state;
+    try {
+      const session = await AsyncStorage.getItem('session');
+      const res = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/changePassword', {
+        email: email,
+        session: session,
+        prePassword: prePassword,
+        newPassword: newPassword,
+      })
+
+      if (res.data["statuscode"] == 200) {
+        router.push("../../(tabs)/homeIndex");
+      }
+      else {
+        console.log("false");
+
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+  emailChangeText = (email: any) => {
+    this.setState({ email });
+  }
+  render() {
+    const { email } = this.state;
+    return (
+      <View style={styles.container}>
+        <View>
+          <Text style={{ top: '190%', left: '32%', fontSize: 24, }}>
+            パスワード変更
+          </Text>
+        </View>
+
+        <View>
+          {/* 
         テキストボックスに入力されたパスワードを保持する変数を用意する
         */}
-        <TextInput
-          style={styles.input}
-          placeholder='旧パスワード'
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="メールアドレスを入力してください"
+            value={email}
+            onChangeText={this.emailChangeText}
+            placeholderTextColor='gray'
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='旧パスワード'
+            placeholderTextColor='gray'
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder='新パスワード'
-        />
+          <TextInput
+            style={styles.input}
+            placeholder='新パスワード'
+            placeholderTextColor='gray'
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder='新パスワード（確認）'
-        />
+          <TextInput
+            style={styles.input}
+            placeholder='新パスワード（確認）'
+            placeholderTextColor='gray'
+          />
+        </View>
+
+        <View style={styles.button}>
+          <Button
+            onPress={() => {
+              // ここでパスワードのチェック
+              this.checkEmail();
+            }}
+            title="パスワード変更"
+            color="red"
+          />
+        </View>
+
       </View>
+    );
+  }
 
-      <View style={styles.button}>
-        <Button
-          onPress={() => {
-            // ここでパスワードのチェック
-            router.push("../../(tabs)/homeIndex")
-          }}
-          title="パスワード変更"
-          color="red"
-        />
-      </View>
-
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   input: {
     top: '100%',
     padding: 10,
@@ -58,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
-    top: '150%',
+    top: pxToDp(250),
     padding: 10,
   }
 

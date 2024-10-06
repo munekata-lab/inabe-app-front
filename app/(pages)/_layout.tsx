@@ -36,15 +36,27 @@
 //   );
 // }
 
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+
 import { Stack } from 'expo-router';
+
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function Layout() {
 
+  const colorScheme = useColorScheme();
+
+
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="account/login" />
-      <Stack.Screen name="account/cnw" />
-    </Stack>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="account/confirmCode" />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="account/login" />
+        <Stack.Screen name="account/cnw" />
+        <Stack.Screen name="ChangePassWord/password" />
+      </Stack>
+    </ThemeProvider>
   );
 }

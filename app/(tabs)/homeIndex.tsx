@@ -5,6 +5,9 @@ import { pxToDp } from '../../src/utils/stylesKits';
 import TabTwoScreen from './QR';  // 导入 TabTwoScreen 组件
 import { router } from 'expo-router';
 
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const { width: screenWidth } = Dimensions.get('window');
 
 const images = [
@@ -21,6 +24,7 @@ class homeIndex extends Component {
     scrollX = new Animated.Value(0); // 初始化滚动位置
 
     state = {
+        session: '',
         isScanning: false,  // 添加状态来控制显示哪个组件
         settingVisible: false,
     };
@@ -39,6 +43,27 @@ class homeIndex extends Component {
 
     scanQRCode = () => {
         this.setState({ isScanning: true });  // 更新状态以显示 TabTwoScreen
+    }
+
+    logOut = async () => {
+        try {
+            const session = await AsyncStorage.getItem('session');
+            const res = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/logOut', {
+                session: session,
+            })
+
+            if (res.data["statuscode"] == 200) {
+                router.push("../(pages)/account/login");
+            }
+            else {
+                console.log("false");
+
+            }
+        }
+        catch (error) {
+            console.error(error)
+        }
+
     }
 
     render() {
@@ -81,7 +106,7 @@ class homeIndex extends Component {
                                 <Button
                                     title='パスワード変更'
                                     onPress={() => {
-                                        router.push("../(pages)/ChangePassWord/email");
+                                        router.push("../(pages)/ChangePassWord/password");
                                         this.closeSetting();
                                     }}
                                 />
@@ -90,8 +115,8 @@ class homeIndex extends Component {
                                     title='ログアウト'
                                     onPress={() => {
                                         // indexに遷移
-                                        router.push("../(pages)/");
                                         this.closeSetting();
+                                        this.logOut();
                                     }}
                                 />
 
