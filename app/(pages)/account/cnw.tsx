@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // create new accout page
 const CreateNewAccount = () => {
@@ -19,13 +20,16 @@ const CreateNewAccount = () => {
     } else {
       try {
         const result = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/registerByEmail', {
+          
           email: email,
           password: password,
         });
+        await AsyncStorage.setItem('email',email);
+
         console.log('レスポンスデータ', result.data);
 
         if (result.data["statuscode"] == 200) {
-          router.push("../../(tabs)/homeIndex");
+          router.push("./confirmCode");
         } else {
           // とりあえずこのエラー文にしているが，emailを入力していない場合もこのAlert文が実行される
           Alert.alert('パスワードを6文字以上入力してください')

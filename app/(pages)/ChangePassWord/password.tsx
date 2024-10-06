@@ -33,7 +33,7 @@ class password extends Component {
         prePassword: prePassword,
         newPassword: newPassword,
       })
-
+      
       if (res.data["statuscode"] == 200) {
         router.push("../../(tabs)/homeIndex");
       }
@@ -48,6 +48,12 @@ class password extends Component {
   }
   emailChangeText = (email: any) => {
     this.setState({ email });
+  }
+  prePassChangeText = (prePassword: any) => {
+    this.setState({ prePassword });
+  }
+  newPassChangeText = (newPassword: any) => {
+    this.setState({ newPassword });
   }
   render() {
     const { email } = this.state;
@@ -73,18 +79,23 @@ class password extends Component {
           <TextInput
             style={styles.input}
             placeholder='旧パスワード'
+            onChangeText={this.prePassChangeText}
             placeholderTextColor='gray'
           />
 
           <TextInput
             style={styles.input}
             placeholder='新パスワード'
+            onChangeText={this.newPassChangeText}
+
             placeholderTextColor='gray'
           />
 
           <TextInput
             style={styles.input}
             placeholder='新パスワード（確認）'
+            onChangeText={this.newPassChangeText}
+
             placeholderTextColor='gray'
           />
         </View>
