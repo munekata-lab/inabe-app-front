@@ -43,6 +43,7 @@ const LoginPage = () => {
   }
 
   return (
+    <View style={styles.container}>
     <View>
       <View>
         <Text style={{ top: '190%', left: '42%', fontSize: 24, }}>
@@ -117,11 +118,16 @@ const LoginPage = () => {
         </View> */}
 
     </View>
+  </View>
   );
 };
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   input: {
     top: '300%',
     padding: 10,

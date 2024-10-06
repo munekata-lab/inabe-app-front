@@ -38,14 +38,16 @@ const CreateNewAccount = () => {
   }
 
   return (
-    <View>
-      <Text style={{ top: '50%', left: '21%', fontSize: 24, }}>新しいアカウントの作成</Text>
+    <View style={styles.container}>
+      <View >
+        <Text style={{ top: '50%', left: '21%', fontSize: 24, }}>新しいアカウントの作成</Text>
 
       <TextInput
         style={styles.input}
         placeholder='Email'
         value={email}
         onChangeText={setEmail}
+        placeholderTextColor='gray'
       />
       <TextInput
         style={styles.input}
@@ -53,6 +55,7 @@ const CreateNewAccount = () => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true}
+        placeholderTextColor='gray'
       />
       <TextInput
         style={styles.input}
@@ -60,6 +63,7 @@ const CreateNewAccount = () => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry={true}
+        placeholderTextColor='gray'
       />
 
       <View style={{ top: '170%' }}>
@@ -70,18 +74,7 @@ const CreateNewAccount = () => {
         />
       </View>
 
-      {/* 
-      <View style={{ top: '170%' }}>
-        <Button
-          onPress={() => {
-            router.push("../../(tabs)/homeIndex")
-          }}
-          title="登録"
-          color="red"
-        />
-      </View> */}
-
-      {/* 
+        {/* 
       <View>
         <Link href="../../(tabs)/homeIndex" asChild>
           <Pressable>
@@ -89,12 +82,17 @@ const CreateNewAccount = () => {
           </Pressable>
         </Link>
       </View> */}
-
+      </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   input: {
     top: '100%',
     padding: 10,
@@ -103,6 +101,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     backgroundColor: '#fff',
+    color:'black'
   },
   button: {
     marginTop: 20,
