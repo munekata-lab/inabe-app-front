@@ -7,6 +7,9 @@ import { router } from 'expo-router';
 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -27,6 +30,7 @@ class homeIndex extends Component {
         session: '',
         isScanning: false,  // 添加状态来控制显示哪个组件
         settingVisible: false,
+        image: null,
     };
 
     nofity = () => {
@@ -64,6 +68,90 @@ class homeIndex extends Component {
             console.error(error)
         }
 
+    }
+
+    pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result["assets"]);
+
+        this.handleImagePicked(result["assets"]);
+    };
+
+    handleImagePicked = async (pickerResult: any) => {
+        try {
+            if (pickerResult.cancelled) {
+                alert("Upload cancelled");
+                return;
+            } else {
+                const img = await this.fetchImageFromUri(pickerResult[0]["uri"]);
+                const base64_image = await this.convertToBase64(img);
+                // console.log(base64_image);
+                await this.uploadImage(base64_image);
+            }
+        } catch (error) {
+            console.log(error);
+            alert("Upload failed");
+        }
+    };
+
+    fetchImageFromUri = async (uri: string) => {
+        // try {
+        //     const base64 = await FileSystem.readAsStringAsync(uri, {
+        //         encoding: FileSystem.EncodingType.Base64
+        //     });
+        //     return base64;
+        // } catch (error) {
+        //     console.log(error)
+        //     return
+        // }
+
+        //画像圧縮(とりあえず800✖️600に)
+        const compression = await manipulateAsync(uri, [{ resize: { width: 800, height: 600 } }], {
+            compress: 0.7,
+            format: SaveFormat.JPEG,
+        });
+        const response = await fetch(compression["uri"]);
+        const blob = await response.blob();
+        return blob;
+    };
+
+    convertToBase64 = async (image: File | Blob): Promise<String> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => {
+                if (reader.result instanceof ArrayBuffer || reader.result == null) {
+                    reject(new Error("FileReader result is not an string"))
+                } else {
+                    resolve(reader.result)
+                }
+            }
+            reader.onerror = (error) => {
+                reject(error)
+            }
+            reader.readAsDataURL(image)
+        }
+        )
+    }
+
+    uploadImage = async (base64_image: any) => {
+        try {
+            const response = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/postImage', {
+                image_data: base64_image,
+            });
+
+            if (response.data["statusCode"] === 200) {
+                console.log("Upload successful:", response.data);
+            } else {
+                console.log("Upload failed with status:", response.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     render() {
@@ -159,6 +247,14 @@ class homeIndex extends Component {
                             );
                         })}
                     </Animated.ScrollView>
+                </View>
+
+                {/* 画像選択 */}
+                <View>
+                    <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                    {/*                 
+                    {this.state.image && <Image source={{ uri: this.state.image }} style={styles.image} />}
+                     */}
                 </View>
 
                 <TouchableOpacity style={styles.bottomContainer} onPress={this.scanQRCode}>
