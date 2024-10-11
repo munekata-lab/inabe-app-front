@@ -251,7 +251,7 @@ class homeIndex extends Component {
 
                 {/* 画像選択 */}
                 <View>
-                    <Button title="Pick an image from camera roll" onPress={this.pickImage} />
+                    <Button title="投稿" onPress={this.pickImage} />
                     {/*                 
                     {this.state.image && <Image source={{ uri: this.state.image }} style={styles.image} />}
                      */}
