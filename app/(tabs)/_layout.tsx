@@ -9,7 +9,7 @@ import mapIcon from '../../src/res/INABE_IMG/map.png';
 import bookIcon from '../../src/res/INABE_IMG/book.png';
 
 import Home from '../../app/(tabs)/homeIndex';
-import Map from '../../app/(tabs)/explore';
+import PhotoGallery from '../../app/(tabs)/photoGallery';
 import Book from '../../app/(tabs)/index';
 
 
@@ -22,8 +22,8 @@ function HomePage() {
   return <Home />;
 }
 
-function MapPage() {
-  return <Map />;
+function PhotoGalleryPage() {
+  return <PhotoGallery />;
 }
 
 function BookPage() {
@@ -41,7 +41,7 @@ class Index extends React.Component {
 
             if (route.name === 'Home') {
               icon = focused ? homeIcon : homeIcon;
-            } else if (route.name === 'Map') {
+            } else if (route.name === 'PhotoGallery') {
               icon = focused ? mapIcon : mapIcon;
             } else if (route.name === 'Book') {
               icon = focused ? bookIcon : bookIcon;
@@ -62,9 +62,9 @@ class Index extends React.Component {
           options={{ title: 'Home' }}
         />
         <Tab.Screen
-          name="Map"
-          component={MapPage}
-          options={{ title: 'Map' }}
+          name="PhotoGallery"
+          component={PhotoGalleryPage}
+          options={{ title: 'PhotoGallery' }}
         />
         <Tab.Screen
           name="Book"

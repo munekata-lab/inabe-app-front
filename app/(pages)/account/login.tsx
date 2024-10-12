@@ -26,7 +26,7 @@ const LoginPage = () => {
           password: password,
         });
 
-        // console.log('レスポンスデータ', result.data);
+        console.log('レスポンスデータ', result.data);
 
         if (result.data["statuscode"] == 200) {
           await AsyncStorage.setItem('session', result.data["session"]);
