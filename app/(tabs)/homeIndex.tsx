@@ -276,7 +276,7 @@ export default homeIndex;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: "black",
     },
     scrollViewWrapper: {
         position: 'absolute',
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         height: "20%",
-        backgroundColor: "white",
+        backgroundColor: "pink",
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
