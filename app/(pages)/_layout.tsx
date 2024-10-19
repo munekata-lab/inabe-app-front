@@ -48,15 +48,17 @@ export default function Layout() {
 
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'dark' ?  DarkTheme:DefaultTheme}>
 
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="account/confirmCode" />
-        <Stack.Screen name="index" />
+      <Stack.Screen name="index" />
         <Stack.Screen name="account/login" />
         <Stack.Screen name="account/cnw" />
         <Stack.Screen name="ChangePassWord/password" />
+        <Stack.Screen name="account/confirmCode" />
+    
+        
       </Stack>
-    </ThemeProvider>
+      </ThemeProvider>
   );
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, StyleSheet, Text, TouchableOpacity, Modal, Button } from 'react-native';
-import axios from 'axios';
+import { View, Image, ScrollView, StyleSheet, Text, TouchableOpacity, Modal, Button } from 'react-native'; 
 import { pxToDp } from '../../src/utils/stylesKits';
 
 
@@ -15,25 +14,22 @@ class PhotoGallery extends Component {
         this.fetchImages();
     }
 
-    fetchImages = async () => {
-        const apiUrl = 'https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/photoGallery';
-        try {
-            const response = await axios.get(apiUrl);
-            console.log('API Response:', response.data);
-            if (response.data && response.data.body) {
-                const body = JSON.parse(response.data.body);
-                console.log('Parsed Images:', body.images);
-                if (Array.isArray(body.images)) {
-                    this.setState({ images: body.images });
-                }
-            }
-        } catch (error) {
-            console.error('Error fetching images:', error);
-        }
+    fetchImages = () => {
+        // 使用 require 语法加载本地图片
+        this.setState({
+            images: [
+                require('/Users/higashi/inabe-app-front/assets/images/icon.png'),
+                require('../../src/res/INABE_IMG/book.png')
+            ]
+        }, () => {
+            console.log("image url: ", this.state.images);
+        });
     };
+
     reflush = () => {
         this.fetchImages();
     }
+
     openModal = (image: never) => {
         this.setState({ modalVisible: true, selectedImage: image });
     };
@@ -41,7 +37,6 @@ class PhotoGallery extends Component {
     closeModal = () => {
         console.log("pressed close button");
         this.setState({ modalVisible: false, selectedImage: null });
-
     };
 
     render() {
@@ -54,7 +49,7 @@ class PhotoGallery extends Component {
                             images.map((image, index) => (
                                 <TouchableOpacity key={index} onPress={() => this.openModal(image)}>
                                     <Image
-                                        source={{ uri: image }}
+                                        source={image}
                                         style={styles.image}
                                         resizeMode="contain"
                                     />
@@ -75,7 +70,7 @@ class PhotoGallery extends Component {
                     <View style={styles.modalContainer}>
                         {selectedImage && (
                             <Image
-                                source={{uri:selectedImage}}
+                                source={selectedImage}
                                 style={styles.fullImage}
                                 resizeMode="contain"
                             />
