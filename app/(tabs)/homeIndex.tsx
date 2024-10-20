@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, Animated, TouchableOpacity, Modal, Button } from 'react-native';
 import { pxToDp } from '../../src/utils/stylesKits';
 
-import TabTwoScreen from './QR';  // 导入 TabTwoScreen 组件
+import QRScanner from './QR';  // 导入 QRScanner 组件
 import { router } from 'expo-router';
 
 import axios from 'axios';
@@ -46,7 +46,7 @@ class homeIndex extends Component {
     }
 
     scanQRCode = () => {
-        this.setState({ isScanning: true });  // 更新状态以显示 TabTwoScreen
+        this.setState({ isScanning: !this.state.isScanning });  // 更新状态以显示 QRScanner
     }
 
     logOut = async () => {
@@ -156,7 +156,7 @@ class homeIndex extends Component {
 
     render() {
         if (this.state.isScanning) {
-            return <TabTwoScreen />;  // 如果状态为扫描，则显示 TabTwoScreen 组件
+            return <QRScanner scanQRCode={this.scanQRCode.bind(this)}/>;  // 如果状态为扫描，则显示 QRScanner 组件
         }
 
         return (
