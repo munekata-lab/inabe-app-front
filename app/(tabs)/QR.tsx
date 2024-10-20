@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Button, TouchableOpacity, Linking } from "react-native";
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useRouter } from "expo-router";
 
-export default function TabTwoScreen() {
+export default function QRScanner({ scanQRCode }) {
 
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const router = useRouter();
+  const openUrl = (data: string) => {
+    const url = data;
+    Linking.openURL(url);
+  }
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -27,11 +33,16 @@ export default function TabTwoScreen() {
       <CameraView barcodeScannerSettings={{
         barcodeTypes: ["qr"],
       }} onBarcodeScanned={({ type, data }) => {
+        openUrl(data);
         console.log(data);
       }} style={styles.camera} facing={facing}>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Text style={styles.text}>QRコード読み取り</Text>
+            <Button
+              onPress={() => scanQRCode()}
+              title="ホームへ戻る"
+              color="pink"
+            />
           </View>
         </View>
       </CameraView>
