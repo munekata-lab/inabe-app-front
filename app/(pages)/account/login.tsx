@@ -16,30 +16,30 @@ const LoginPage = () => {
 
   const handlePostRequest = async () => {
     // とりあえずパスワードのバリデーション
-    // if (!password) {
-    //   Alert.alert('パスワードを入力してください')
-    // }
-    // else {
-    //   try {
-    //     const result = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/login', {
-    //       email: email,
-    //       password: password,
-    //     });
+    if (!password) {
+      Alert.alert('パスワードを入力してください')
+    }
+    else {
+      try {
+        const result = await axios.post('https://nu1ku3c2d2.execute-api.ap-northeast-1.amazonaws.com/v1/login', {
+          email: email,
+          password: password,
+        });
 
-    //     console.log('レスポンスデータ', result.data);
+        console.log('レスポンスデータ', result.data);
 
-    //     if (result.data["statuscode"] == 200) {
-    //       await AsyncStorage.setItem('session', result.data["session"]);
+        if (result.data["statuscode"] == 200) {
+          await AsyncStorage.setItem('session', result.data["session"]);
           router.push("../../(tabs)/homeIndex");
-    //     } else {
-    //       // とりあえずこのエラー文にしているが，emailを入力していない場合もこのAlert文が実行される
-    //       Alert.alert('Emailもしくはパスワードが間違っています')
-    //     }
+        } else {
+          // とりあえずこのエラー文にしているが，emailを入力していない場合もこのAlert文が実行される
+          Alert.alert('Emailもしくはパスワードが間違っています')
+        }
 
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // }
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 
   return (

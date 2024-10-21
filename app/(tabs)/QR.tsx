@@ -7,10 +7,19 @@ export default function QRScanner({ scanQRCode }) {
 
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [lastScanned, setLastScanned] = useState<number>(0);
   const router = useRouter();
-  const openUrl = (data: string) => {
-    const url = data;
-    Linking.openURL(url);
+
+  //スキャンは１秒ごとに１回行う
+  const handleBarcodeScanned = ({ type, data }) => {
+    const currentTime = Date.now();
+    if (currentTime - lastScanned >= 1000) {
+      setLastScanned(currentTime);
+      console.log("QR Code data: ", data);
+      router.push("../(pages)/inputObservedValue/InputObservedValuePage");
+      const url = data;
+      // Linking.openURL(url);
+    }
   }
 
   if (!permission) {
@@ -30,12 +39,13 @@ export default function QRScanner({ scanQRCode }) {
 
   return (
     <View style={styles.container}>
-      <CameraView barcodeScannerSettings={{
-        barcodeTypes: ["qr"],
-      }} onBarcodeScanned={({ type, data }) => {
-        openUrl(data);
-        console.log(data);
-      }} style={styles.camera} facing={facing}>
+      <CameraView
+        barcodeScannerSettings={{
+          barcodeTypes: ["qr"],
+        }}
+        onBarcodeScanned={handleBarcodeScanned}
+        style={styles.camera}
+        facing={facing}>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
             <Button
